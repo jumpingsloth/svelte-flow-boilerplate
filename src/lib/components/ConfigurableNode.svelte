@@ -62,25 +62,27 @@
   }
 </script>
 
-<div class="rounded-lg border border-slate-700 bg-slate-900/80 p-4 shadow-lg">
-  <h3 class="text-lg font-semibold text-slate-100">{data.label}</h3>
-  <div class="mt-4 flex gap-4 text-sm">
+<div
+  class="rounded-xl border border-gray-200 bg-white/90 p-4 shadow-lg shadow-gray-200/60 backdrop-blur dark:border-gray-700 dark:bg-gray-800/90 dark:shadow-black/20"
+>
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{data.label}</h3>
+  <div class="mt-4 flex gap-4 text-sm text-gray-700 dark:text-gray-200">
     <div class="flex-1">
-      <p class="mb-2 font-medium uppercase tracking-wide text-slate-400">Inputs</p>
+      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Inputs</p>
       <ul class="space-y-2">
         {#if data.inputs.length === 0}
-          <li class="text-xs italic text-slate-500">No inputs</li>
+          <li class="text-xs italic text-gray-400 dark:text-gray-500">No inputs</li>
         {:else}
           {#each data.inputs as input}
             <li class="relative">
               <Handle
-                class="absolute -left-3 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-300 bg-emerald-500/80"
+                class="absolute -left-3 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-emerald-300 bg-emerald-400 dark:border-emerald-500 dark:bg-emerald-500"
                 id={input.id}
                 position={Position.Left}
                 type="target"
               />
               <input
-                class="w-full rounded bg-slate-800/80 px-2 py-1 text-slate-100 outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-emerald-400 dark:focus:ring-emerald-400"
                 value={input.label}
                 on:change={(event) => onPortRename(event, 'input', input)}
                 disabled={isLocked}
@@ -91,21 +93,21 @@
       </ul>
     </div>
     <div class="flex-1">
-      <p class="mb-2 font-medium uppercase tracking-wide text-slate-400">Outputs</p>
+      <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Outputs</p>
       <ul class="space-y-2">
         {#if data.outputs.length === 0}
-          <li class="text-xs italic text-slate-500">No outputs</li>
+          <li class="text-xs italic text-gray-400 dark:text-gray-500">No outputs</li>
         {:else}
           {#each data.outputs as output}
             <li class="relative">
               <Handle
-                class="absolute -right-3 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-300 bg-sky-500/80"
+                class="absolute -right-3 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-sky-300 bg-sky-400 dark:border-sky-500 dark:bg-sky-500"
                 id={output.id}
                 position={Position.Right}
                 type="source"
               />
               <input
-                class="w-full rounded bg-slate-800/80 px-2 py-1 text-slate-100 outline-none focus:ring-2 focus:ring-sky-400 disabled:cursor-not-allowed disabled:opacity-60"
+                class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-sky-400 dark:focus:ring-sky-400"
                 value={output.label}
                 on:change={(event) => onPortRename(event, 'output', output)}
                 disabled={isLocked}
