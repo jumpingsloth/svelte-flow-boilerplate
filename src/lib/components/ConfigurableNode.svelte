@@ -63,7 +63,7 @@
 </script>
 
 <div
-  class="rounded-xl border border-gray-200 bg-white p-4 shadow-lg shadow-orange-100/80 dark:border-gray-700 dark:bg-gray-800/95 dark:shadow-orange-900/20"
+  class="rounded-xl border border-gray-200 bg-white p-4 shadow-xl shadow-xl/40 dark:border-gray-700 dark:bg-gray-800/95 dark:shadow-xl/40"
 >
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{data.label}</h3>
   <div class="mt-4 flex gap-4 text-sm text-gray-700 dark:text-gray-200">

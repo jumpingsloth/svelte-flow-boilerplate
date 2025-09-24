@@ -1,13 +1,14 @@
 <script lang="ts">
   import '@xyflow/svelte/dist/style.css';
   import { get, writable } from 'svelte/store';
-  import { onMount, setContext } from 'svelte';
+  import { onMount, setContext, tick } from 'svelte';
   import {
     Background,
     BackgroundVariant,
     Controls,
     MiniMap,
-    SvelteFlow
+    SvelteFlow,
+    type FitViewOptions
   } from '@xyflow/svelte';
   import { addEdge, type Connection } from '@xyflow/system';
   import ConfigurableNode from '$lib/components/ConfigurableNode.svelte';
@@ -27,14 +28,32 @@
   const nodesStore = writable<FlowNode[]>([]);
   const edgesStore = writable<FlowEdge[]>([]);
 
+  const DEFAULT_FIT_VIEW_OPTIONS: FitViewOptions = {
+    padding: 0.24,
+    includeHiddenNodes: true,
+    minZoom: 0.2
+  };
+
+  let shouldFitView = true;
+  let fitViewOptions: FitViewOptions = { ...DEFAULT_FIT_VIEW_OPTIONS };
+
   setContext('graphLock', lockStore);
 
   let isLoading = true;
+
+  async function requestFitView() {
+    await tick();
+    shouldFitView = false;
+    await tick();
+    fitViewOptions = { ...DEFAULT_FIT_VIEW_OPTIONS };
+    shouldFitView = true;
+  }
 
   async function initializeGraph() {
     const graph: GraphData = await loadGraphData();
     nodesStore.set(applyAutoLayout(graph.nodes, graph.edges));
     edgesStore.set(graph.edges);
+    await requestFitView();
     isLoading = false;
   }
 
@@ -45,19 +64,21 @@
       console.error('Failed to initialize graph', error);
       nodesStore.set(applyAutoLayout(initialGraphData.nodes, initialGraphData.edges));
       edgesStore.set(initialGraphData.edges);
+      await requestFitView();
       isLoading = false;
     }
   });
 
-  function relayout() {
+  async function relayout() {
     const currentNodes = get(nodesStore);
     const currentEdges = get(edgesStore);
     nodesStore.set(applyAutoLayout(currentNodes, currentEdges));
+    await requestFitView();
   }
 
   function handleConnect(connection: Connection) {
     edgesStore.update((current) => addEdge(connection, current));
-    relayout();
+    void relayout();
   }
 
   function handleRename(event: CustomEvent<RenameHandleDetail>) {
@@ -86,7 +107,7 @@
         return updated;
       })
     );
-    relayout();
+    void relayout();
   }
 
   function toggleLock() {
@@ -128,7 +149,9 @@
       nodes={nodesStore}
       edges={edgesStore}
       {nodeTypes}
-      fitView
+      fitView={shouldFitView}
+      fitViewOptions={fitViewOptions}
+      minZoom={0.2}
       nodesDraggable={!$lockStore}
       nodesConnectable={!$lockStore}
       elementsSelectable={!$lockStore}
