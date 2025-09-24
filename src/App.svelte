@@ -13,6 +13,7 @@
   import ConfigurableNode from '$lib/components/ConfigurableNode.svelte';
   import { initialGraphData, loadGraphData } from '$lib/graphData';
   import { applyAutoLayout } from '$lib/layout';
+  import { DarkMode } from 'flowbite-svelte';
   import type {
     FlowEdge,
     FlowNode,
@@ -93,11 +94,20 @@
   }
 </script>
 
-<main class="flex h-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
-  <header class="flex items-center justify-between border-b border-slate-800 bg-slate-900/70 px-6 py-3">
-    <h1 class="text-xl font-semibold">Svelte Flow Boilerplate</h1>
+<main class="flex h-screen flex-col overflow-hidden bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <header
+    class="flex items-center justify-between border-b border-gray-200 bg-gray-50/95 px-6 py-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95"
+  >
+    <div class="flex items-center gap-3">
+      <DarkMode
+        ariaLabel="Toggle dark mode"
+        class="focus:outline-none focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-500"
+        size="lg"
+      />
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Svelte Flow Boilerplate</h1>
+    </div>
     <button
-      class="rounded bg-slate-800 px-4 py-2 text-sm font-medium uppercase tracking-wide transition hover:bg-slate-700"
+      class="rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200 dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:ring-orange-500/60"
       on:click={toggleLock}
     >
       {#if $lockStore}
@@ -110,7 +120,7 @@
 
   <section class="relative flex flex-1">
     {#if isLoading}
-      <div class="absolute inset-0 flex items-center justify-center text-slate-400">
+      <div class="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-gray-400">
         Loading graph...
       </div>
     {/if}
@@ -126,12 +136,24 @@
       zoomOnPinch={!$lockStore}
       panOnScroll={!$lockStore}
       onconnect={handleConnect}
-      class="flex-1"
+      class="flex-1 bg-gray-50 dark:bg-gray-900 [--graph-bg:theme(colors.gray.50)] [--graph-pattern:rgba(249,115,22,0.16)] [--graph-minimap-mask:rgba(17,24,39,0.12)] [--graph-control-bg:theme(colors.white)] [--graph-control-hover:theme(colors.orange.50)] [--graph-control-border:theme(colors.gray.200)] dark:[--graph-bg:theme(colors.gray.900)] dark:[--graph-pattern:rgba(251,191,36,0.28)] dark:[--graph-minimap-mask:rgba(15,23,42,0.45)] dark:[--graph-control-bg:theme(colors.gray.800)] dark:[--graph-control-hover:rgba(249,115,22,0.25)] dark:[--graph-control-border:theme(colors.gray.700)]"
+      style="--background-color: var(--graph-bg); --background-pattern-color: var(--graph-pattern); --minimap-mask-color: var(--graph-minimap-mask); --controls-button-background-color: var(--graph-control-bg); --controls-button-background-color-hover: var(--graph-control-hover); --controls-button-border-color: var(--graph-control-border)"
       on:rename={handleRename}
     >
-      <MiniMap class="!bg-slate-900/70" />
-      <Controls position="bottom-left" class="!bg-slate-900/70" />
-      <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} />
+      <MiniMap
+        class="!border !border-gray-200 !bg-white text-gray-600 shadow-sm dark:!border-gray-700 dark:!bg-gray-800/90 dark:text-gray-300"
+      />
+      <Controls
+        position="bottom-left"
+        class="!rounded-lg !bg-white !text-orange-500 shadow-sm dark:!bg-gray-800/90 dark:!text-orange-300"
+      />
+      <Background
+        variant={BackgroundVariant.Dots}
+        gap={16}
+        size={1.5}
+        bgColor="var(--graph-bg)"
+        patternColor="var(--graph-pattern)"
+      />
     </SvelteFlow>
   </section>
 </main>

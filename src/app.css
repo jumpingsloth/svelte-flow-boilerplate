@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
+
+@layer base {
+  :root {
+    --graph-edge-color: theme('colors.orange.500');
+  }
+
+  .dark {
+    --graph-edge-color: theme('colors.orange.300');
+  }
 }
+
+:global(.react-flow__edge-path) {
+  stroke: var(--graph-edge-color);
+}
+
+:global(.react-flow__edge-textbg) {
+  fill: var(--graph-control-bg, theme('colors.white'));
+}
+
+:global(.react-flow__selection) {
+  background-color: rgba(249, 115, 22, 0.14);
+  border-color: rgba(249, 115, 22, 0.45);
+}
+
+:global(.dark .react-flow__selection) {
+  background-color: rgba(251, 191, 36, 0.22);
+  border-color: rgba(251, 191, 36, 0.55);
+}
+
+

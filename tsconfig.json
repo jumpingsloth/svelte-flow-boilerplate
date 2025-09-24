@@ -5,7 +5,7 @@
     "module": "esnext",
     "target": "esnext",
     "lib": ["esnext", "dom"],
-    "types": ["svelte"],
+    "types": ["svelte", "node"],
     "baseUrl": ".",
     "paths": {
       "$lib/*": ["src/lib/*"],
